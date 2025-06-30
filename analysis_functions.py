@@ -21,7 +21,6 @@ def load_pattern_recognition_model(model_path=TECH_PATTERNS_MODEL):
     except Exception as e:
         raise Exception(f"فشل في تحميل النموذج: {e}. تأكد من وجود الملف في المسار الصحيح")
 
-
 def fetch_tradingview_chart(ticker, interval='1D', study_params=None):
     """
     جلب شارت TradingView لأي سهم
@@ -34,15 +33,16 @@ def fetch_tradingview_chart(ticker, interval='1D', study_params=None):
     params = {
         'symbol': ticker,
         'interval': interval,
-        'studies': study_params or 'MA5,MA20,RSI14'
+        'studies': study_params or 'MA5,MA20,RSI14'  # دراسات فنية افتراضية
     }
     
     try:
         response = requests.get(base_url, params=params, stream=True)
+        response.raise_for_status()  # التحقق من وجود أخطاء في الطلب
         img = Image.open(BytesIO(response.content))
         return img
     except Exception as e:
-        raise Exception(f"Error fetching chart: {e}")
+        raise Exception(f"خطأ في جلب الشارت: {e}")
 
 def preprocess_chart_image(image):
     """
@@ -62,14 +62,7 @@ def preprocess_chart_image(image):
         edges = cv2.Canny(enhanced, 50, 150)
         return edges
     except Exception as e:
-        raise Exception(f"Image processing error: {e}")
-
-def load_pattern_recognition_model(model_path=TECH_PATTERNS_MODEL):
-    """تحميل نموذج التعرف على الأنماط"""
-    try:
-        return load_model(model_path)
-    except Exception as e:
-        raise Exception(f"Failed to load model: {e}")
+        raise Exception(f"خطأ في معالجة الصورة: {e}")
 
 def detect_chart_patterns(processed_image):
     """
@@ -79,10 +72,13 @@ def detect_chart_patterns(processed_image):
     """
     try:
         model = load_pattern_recognition_model()
+        
+        # تحضير الصورة للنموذج
         img = kimage.img_to_array(processed_image)
         img = np.expand_dims(img, axis=0)
-        img = img / 255.0
+        img = img / 255.0  # تطبيع القيم
         
+        # التنبؤ بالأنماط
         predictions = model.predict(img)
         patterns = ['Head & Shoulders', 'Double Top', 'Double Bottom', 
                    'Triangle', 'Wedge', 'Channel', 'Flag']
@@ -90,7 +86,9 @@ def detect_chart_patterns(processed_image):
         detected_patterns = {pattern: float(prob) for pattern, prob in zip(patterns, predictions[0])}
         return sorted(detected_patterns.items(), key=lambda x: x[1], reverse=True)
     except Exception as e:
-        raise Exception(f"Pattern detection error: {e}")
+        raise Exception(f"خطأ في اكتشاف الأنماط: {e}")
+
+# يمكنك إضافة الدوال الأخرى مثل analyze_technical_indicators و generate_trading_recommendation هنا
 
 def analyze_technical_indicators(ticker, period='1y'):
     """
