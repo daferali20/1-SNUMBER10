@@ -7,7 +7,14 @@ from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-
+# استيراد دوال التحليل من ملف منفصل
+from analysis_functions import (
+    fetch_tradingview_chart,
+    preprocess_chart_image,
+    detect_chart_patterns,
+    analyze_technical_indicators,
+    generate_trading_recommendation
+)
 class TechnicalAnalysisApp(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -139,13 +146,7 @@ class TechnicalAnalysisApp(QMainWindow):
         indicators = self.indicators_combo.currentText()
         
         # جلب البيانات وعرضها (هنا نستخدم الدوال التي سبق تعريفها)
-      from analysis_functions import (
-      fetch_tradingview_chart,
-      preprocess_chart_image,
-      detect_chart_patterns,
-      analyze_technical_indicators,
-      generate_trading_recommendation
-      )
+      
         try:
             # جلب الشارت وعرضه
             chart_img = fetch_tradingview_chart(ticker, self.map_timeframe(timeframe))
