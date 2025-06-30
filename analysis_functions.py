@@ -10,7 +10,13 @@ import talib
 from datetime import datetime, timedelta
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image as kimage
+from tensorflow.keras.models import load_model
 
+# تأكد أن المسار صحيح (ضع الملف في نفس مجلد المشروع)
+TECH_PATTERNS_MODEL = "tech_patterns_model.h5"
+
+def load_pattern_recognition_model(model_path=TECH_PATTERNS_MODEL):
+    return load_model(model_path)
 # ثوابت التطبيق
 TECH_PATTERNS_MODEL = "tech_patterns_model.h5"
 
