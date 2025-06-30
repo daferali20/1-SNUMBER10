@@ -139,6 +139,13 @@ class TechnicalAnalysisApp(QMainWindow):
         indicators = self.indicators_combo.currentText()
         
         # جلب البيانات وعرضها (هنا نستخدم الدوال التي سبق تعريفها)
+      from analysis_functions import (
+      fetch_tradingview_chart,
+      preprocess_chart_image,
+      detect_chart_patterns,
+      analyze_technical_indicators,
+      generate_trading_recommendation
+      )
         try:
             # جلب الشارت وعرضه
             chart_img = fetch_tradingview_chart(ticker, self.map_timeframe(timeframe))
