@@ -146,25 +146,25 @@ class TechnicalAnalysisApp(QMainWindow):
         indicators = self.indicators_combo.currentText()
         
         # جلب البيانات وعرضها (هنا نستخدم الدوال التي سبق تعريفها)
-      
+
         try:
-            # جلب الشارت وعرضه
-            chart_img = fetch_tradingview_chart(ticker, self.map_timeframe(timeframe))
-            self.display_chart(chart_img)
+        # جلب الشارت وعرضه
+        chart_img = fetch_tradingview_chart(ticker, self.map_timeframe(timeframe))
+        self.display_chart(chart_img)
             
-            # تحليل الأنماط
-            processed_img = preprocess_chart_image(chart_img)
-            patterns = detect_chart_patterns(processed_img)
-            self.display_patterns(patterns)
+        # تحليل الأنماط
+        processed_img = preprocess_chart_image(chart_img)
+        patterns = detect_chart_patterns(processed_img)
+        self.display_patterns(patterns)
             
-            # تحليل المؤشرات
-            indicators_data, analysis = analyze_technical_indicators(ticker)
-            self.display_indicators(indicators_data, analysis)
+        # تحليل المؤشرات
+        indicators_data, analysis = analyze_technical_indicators(ticker)
+        self.display_indicators(indicators_data, analysis)
             
-            # توليد التوصية
-            recommendation = generate_trading_recommendation(ticker)
-            self.display_recommendation(recommendation)
-            
+        # توليد التوصية
+        recommendation = generate_trading_recommendation(ticker)
+        self.display_recommendation(recommendation)
+   #-------------------------------------          
             # عرض النتائج السريعة
             self.quick_results.setPlainText(
                 f"النتائج لـ {ticker}:\n"
