@@ -135,19 +135,18 @@ class TechnicalAnalysisApp(QMainWindow):
         return tabs
     
     def analyze_stock(self):
-        """تحليل السهم المحدد"""
-        ticker = self.ticker_input.text().strip().upper()
-        if not ticker:
-            self.show_error("الرجاء إدخال رمز سهم صالح")
-            return
-        
-        self.current_ticker = ticker
-        timeframe = self.timeframe_combo.currentText()
-        indicators = self.indicators_combo.currentText()
-        
-        # جلب البيانات وعرضها (هنا نستخدم الدوال التي سبق تعريفها)
-
-        try:
+      """تحليل السهم المحدد"""
+      ticker = self.ticker_input.text().strip().upper()
+      if not ticker:
+          self.show_error("الرجاء إدخال رمز سهم صالح")
+          return
+    
+    self.current_ticker = ticker
+    timeframe = self.timeframe_combo.currentText()
+    indicators = self.indicators_combo.currentText()
+    
+    # جلب البيانات وعرضها (هنا نستخدم الدوال التي سبق تعريفها)
+    try:
         # جلب الشارت وعرضه
         chart_img = fetch_tradingview_chart(ticker, self.map_timeframe(timeframe))
         self.display_chart(chart_img)
@@ -164,18 +163,18 @@ class TechnicalAnalysisApp(QMainWindow):
         # توليد التوصية
         recommendation = generate_trading_recommendation(ticker)
         self.display_recommendation(recommendation)
-   #-------------------------------------          
-            # عرض النتائج السريعة
-            self.quick_results.setPlainText(
-                f"النتائج لـ {ticker}:\n"
-                f"الاتجاه: {analysis['Trend']}\n"
-                f"إشارة RSI: {analysis['RSI_Signal']}\n"
-                f"النمط الرئيسي: {patterns[0][0]} ({patterns[0][1]:.0%} ثقة)\n"
-                f"التوصية: {recommendation['Recommendation']}"
-            )
             
-        except Exception as e:
-            self.show_error(f"حدث خطأ أثناء تحليل السهم: {str(e)}")
+        # عرض النتائج السريعة
+        self.quick_results.setPlainText(
+            f"النتائج لـ {ticker}:\n"
+            f"الاتجاه: {analysis['Trend']}\n"
+            f"إشارة RSI: {analysis['RSI_Signal']}\n"
+            f"النمط الرئيسي: {patterns[0][0]} ({patterns[0][1]:.0%} ثقة)\n"
+            f"التوصية: {recommendation['Recommendation']}"
+        )
+            
+    except Exception as e:
+        self.show_error(f"حدث خطأ أثناء تحليل السهم: {str(e)}")
     
     def display_chart(self, chart_img):
         """عرض الشارت في واجهة المستخدم"""
