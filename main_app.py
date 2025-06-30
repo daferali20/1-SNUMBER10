@@ -8,11 +8,13 @@ from PyQt5.QtCore import Qt
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 # استيراد دوال التحليل من ملف منفصل
-from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout,
-    QHBoxLayout, QLabel, QLineEdit, QPushButton,
-    QComboBox, QTextEdit, QTabWidget, QTableWidget,
-    QTableWidgetItem, QGraphicsView, QGraphicsScene
+# استيراد دوال التحليل من ملف منفصل
+from analysis_functions import (
+    fetch_tradingview_chart,
+    preprocess_chart_image,
+    detect_chart_patterns,
+    analyze_technical_indicators,
+    generate_trading_recommendation
 )
 class TechnicalAnalysisApp(QMainWindow):
     def __init__(self):
