@@ -10,15 +10,17 @@ import talib
 from datetime import datetime, timedelta
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image as kimage
-from tensorflow.keras.models import load_model
 
-# تأكد أن المسار صحيح (ضع الملف في نفس مجلد المشروع)
-TECH_PATTERNS_MODEL = "tech_patterns_model.h5"
+# ثوابت التطبيق
+TECH_PATTERNS_MODEL = "tech_patterns_model.h5"  # تأكد من وجود الملف في نفس الدليل
 
 def load_pattern_recognition_model(model_path=TECH_PATTERNS_MODEL):
-    return load_model(model_path)
-# ثوابت التطبيق
-TECH_PATTERNS_MODEL = "tech_patterns_model.h5"
+    """تحميل نموذج التعرف على الأنماط الفنية"""
+    try:
+        return load_model(model_path)
+    except Exception as e:
+        raise Exception(f"فشل في تحميل النموذج: {e}. تأكد من وجود الملف في المسار الصحيح")
+
 
 def fetch_tradingview_chart(ticker, interval='1D', study_params=None):
     """
