@@ -3,10 +3,16 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 import requests
+import cv2
 from io import BytesIO
 from PIL import Image
 import talib
 from datetime import datetime, timedelta
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image as kimage
+
+# ثوابت التطبيق
+TECH_PATTERNS_MODEL = "tech_patterns_model.h5"
 
 def fetch_tradingview_chart(ticker, interval='1D', study_params=None):
     """
@@ -49,13 +55,13 @@ def preprocess_chart_image(image):
         return edges
     except Exception as e:
         raise Exception(f"Image processing error: {e}")
-# analysis_functions.py
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image as kimage
-import cv2
 
-# يجب عليك تنزيل النموذج مسبقاً أو تدريبه
-TECH_PATTERNS_MODEL = "tech_patterns_model.h5"
+def load_pattern_recognition_model(model_path=TECH_PATTERNS_MODEL):
+    """تحميل نموذج التعرف على الأنماط"""
+    try:
+        return load_model(model_path)
+    except Exception as e:
+        raise Exception(f"Failed to load model: {e}")
 
 def detect_chart_patterns(processed_image):
     """
@@ -78,13 +84,6 @@ def detect_chart_patterns(processed_image):
     except Exception as e:
         raise Exception(f"Pattern detection error: {e}")
 
-def load_pattern_recognition_model(model_path=TECH_PATTERNS_MODEL):
-    """تحميل نموذج التعرف على الأنماط"""
-    try:
-        return load_model(model_path)
-    except Exception as e:
-        raise Exception(f"Failed to load model: {e}")
-        # analysis_functions.py
 def analyze_technical_indicators(ticker, period='1y'):
     """
     تحليل المؤشرات الفنية للسهم
@@ -121,7 +120,7 @@ def analyze_technical_indicators(ticker, period='1y'):
         return indicators, analysis
     except Exception as e:
         raise Exception(f"Technical analysis error: {e}")
-        # analysis_functions.py
+
 def generate_trading_recommendation(ticker):
     """
     توليد توصية تداول بناء على التحليل الفني
